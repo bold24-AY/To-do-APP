@@ -30,6 +30,11 @@ void displayMenu(){
 void show(vector<Tasks> &tasks){
 
     int n = tasks.size();
+    if (n == 0){
+        cout << "No tasks available." << endl;
+        return;
+    }
+    
     for(int i = 0 ; i < n ; i++){
         cout <<"    "<< i+1 << ". " << tasks[i].name <<"   status";
         if(tasks[i].completed){
