@@ -23,6 +23,7 @@ void displayMenu(){
     cout << "2. View Tasks" << endl;  
     cout << "3. Delete Tasks" <<endl;
     cout << "4. Change Complete Status of Task" <<endl;
+    cout << "5. Exit" << endl;
     cout << "Enter the number "<<endl;          
 }
 
@@ -100,10 +101,13 @@ int main(){
 
         }
 
-        else{
+        else if(user_choice == 5){
+            cout <<"Exiting the To-Do List Application. Goodbye!"<<endl;
             break;
         }
-        
+        else {
+            cout <<"Invalid Choice. Please try again."<<endl;
+        }
 
     }
 
