@@ -1,5 +1,6 @@
 #include<iostream>
 #include<vector>
+#include<fstream>
 #include<string>
 
 using namespace std;
@@ -15,6 +16,36 @@ struct Tasks{
     }
 };
 
+void saveTasksToFile(const vector<Tasks> &tasks){
+    //Function to save Tasks in  a File
+
+    ofstream file("tasks.txt");
+    for(auto &t : tasks){
+        file << t.name << "|" <<t.completed << "\n";
+
+    }
+    file.close();
+
+}
+
+
+void loadTasksFromFile(vector<Tasks> &tasks){
+    //Function to load Tasks from a File
+    
+    ifstream file("tasks.txt");
+    string line;
+    while(getline(file,line)){
+        size_t delimiterPos = line.find("|");
+        string name = line.substr(0, delimiterPos);
+        bool completed = stoi(line.substr(delimiterPos + 1));
+        Tasks t(name);
+        t.completed = completed;
+        tasks.push_back(t);
+    }
+    file.close();
+}
+
+
 void displayMenu(){
     cout << "                   ---------------------------------------------" << endl;
     cout << "                   ---------------- To-Do List ----------------" << endl;
@@ -23,7 +54,8 @@ void displayMenu(){
     cout << "2. View Tasks" << endl;  
     cout << "3. Delete Tasks" <<endl;
     cout << "4. Change Complete Status of Task" <<endl;
-    cout << "5. Exit" << endl;
+    cout << "5. Exit (AutoSave)" << endl;
+    cout << "6. Exit Without Save" << endl;
     cout << "Enter the number "<<endl;          
 }
 
@@ -34,7 +66,7 @@ void show(vector<Tasks> &tasks){
         cout << "No tasks available." << endl;
         return;
     }
-    
+
     for(int i = 0 ; i < n ; i++){
         cout <<"    "<< i+1 << ". " << tasks[i].name <<"   status";
         if(tasks[i].completed){
@@ -51,6 +83,7 @@ void show(vector<Tasks> &tasks){
 int main(){
     
     vector<Tasks> tasks;
+    loadTasksFromFile(tasks);
     int user_choice;    // Here all of the tasks will be stored with its completed status
     while(true){
        
@@ -107,7 +140,12 @@ int main(){
         }
 
         else if(user_choice == 5){
-            cout <<"Exiting the To-Do List Application. Goodbye!"<<endl;
+            saveTasksToFile(tasks);
+            cout <<"Taskes saved to file . Exiting Goodbye!"<<endl;
+            break;
+        }
+        else if(user_choice == 6){
+            cout <<"Exiting without saving. Goodbye!"<<endl;
             break;
         }
         else {
